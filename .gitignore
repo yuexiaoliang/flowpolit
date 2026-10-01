@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.desktop-stage/
+desktop-builds/
+*.log
+*.zip
+*.dmg
+*.AppImage
+.DS_Store
+.env
+.env.*
+!.env.example
