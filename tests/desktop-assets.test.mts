@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import test from 'node:test';
 
 const require = createRequire(import.meta.url);
-const { createAssetHandler } = require('../desktop/asset-server.cjs');
+const { createAssetHandler } = require('../dist/desktop/asset-server.cjs');
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../dist/client');
 const serve = createAssetHandler(root);
 

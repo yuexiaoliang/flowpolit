@@ -1,10 +1,10 @@
-const { app, BrowserWindow, protocol } = require('electron');
-const path = require('node:path');
-const { createAssetHandler } = require('./asset-server.cjs');
+import { app, BrowserWindow, protocol } from 'electron';
+import path from 'node:path';
+import { createAssetHandler } from './asset-server.ts';
 
 const scheme = 'flowpilot';
 const origin = `${scheme}://app`;
-const clientRoot = path.resolve(__dirname, '../dist/client');
+const clientRoot = path.resolve(__dirname, '../client');
 
 protocol.registerSchemesAsPrivileged([{ scheme, privileges: {
   standard: true,

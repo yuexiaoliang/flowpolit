@@ -2,28 +2,36 @@
   "name": "flow-pilot",
   "version": "0.2.0",
   "private": true,
+  "packageManager": "pnpm@11.7.0",
+  "engines": {
+    "node": ">=22"
+  },
   "type": "module",
-  "main": "desktop/main.cjs",
+  "main": "dist/desktop/main.cjs",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/prepare-sites-build.mjs",
-    "desktop:dev": "npm run build && electron .",
-    "desktop:mac": "npm run build && node scripts/package-desktop.mjs mac",
-    "desktop:linux": "npm run build && node scripts/package-desktop.mjs linux",
+    "build": "pnpm typecheck && vite build && pnpm build:desktop-runtime && node scripts/prepare-sites-build.mjs",
+    "build:desktop-runtime": "node scripts/build-desktop.mjs",
+    "desktop:dev": "pnpm build && electron .",
+    "desktop:mac": "pnpm build && node scripts/package-desktop.mjs mac",
+    "desktop:linux": "pnpm build && node scripts/package-desktop.mjs linux",
     "preview": "vite preview",
-    "test": "npm run build && node --test tests/*.test.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "pnpm build && pnpm test:app && pnpm test:sites",
     "test:sites": "node --test tests/sites-worker.test.mjs",
-    "test:app": "node --test tests/schedule.test.mjs tests/task-schedule.test.mjs tests/desktop-assets.test.mjs"
-  },
-  "dependencies": {
-    "@phosphor-icons/react": "^2.1.10",
-    "@vitejs/plugin-react": "5.0.4",
-    "react": "19.2.0",
-    "react-dom": "19.2.0",
-    "vite": "6.4.2"
+    "test:app": "tsx --test tests/schedule.test.mts tests/task-schedule.test.mts tests/desktop-assets.test.mts"
   },
   "devDependencies": {
+    "@flowpilot/domain": "workspace:*",
+    "@vitejs/plugin-react": "5.0.4",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "@electron/packager": "^20.3.0",
-    "electron": "^44.4.5"
+    "electron": "^44.4.5",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "vite": "6.4.2"
   }
 }

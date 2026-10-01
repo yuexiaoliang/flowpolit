@@ -4,7 +4,7 @@
 
 Flow Pilot 的目标是兼容多个客户端。任务规则、运行状态和数据契约应独立于客户端界面；桌面端、本地服务与未来客户端在这些边界上协作。面向维护者的文档使用简体中文，代码标识符、命令和必要的技术术语保留原文。
 
-地基重构采用 pnpm monorepo，应用源码统一为 TypeScript / TSX，包括客户端、共享模块、本地服务和 Electron 主进程。迁移可分阶段进行，完成后不保留 JavaScript 业务模块。迁移前的命令与仓库当前配置保持一致。
+仓库采用 pnpm workspace，应用源码使用 TypeScript / TSX。`packages/contracts` 定义跨客户端数据类型，`packages/domain` 承载与界面无关的任务规则。新增客户端或本地服务应依赖这些共享边界；不要将 Electron、DOM 或浏览器存储依赖放入共享包。Sites 的 Worker 和构建脚本是现有交接适配层。
 
 ## 当前桌面客户端
 
@@ -24,6 +24,6 @@ Flow Pilot 的目标是兼容多个客户端。任务规则、运行状态和数
 
 ## 当前构建约束
 
-界面代码位于 `src/`。保持 `.openai/hosting.json`、`worker/index.js`、`scripts/prepare-sites-build.mjs` 和 `tests/sites-worker.test.mjs` 完整，使现有网页预览仍可交接给 Sites。交接前运行 `npm run build` 和 `npm run test:sites`；构建产物须包含 `dist/client/index.html`、`dist/server/index.js` 和 `dist/.openai/hosting.json`。迁移到 pnpm 后同步更新命令并验证相同产物。
+界面代码位于 `apps/desktop/src/`。保持 `.openai/hosting.json`、`worker/index.js`、`scripts/prepare-sites-build.mjs` 和 `tests/sites-worker.test.mjs` 完整，使现有网页预览仍可交接给 Sites。交接前运行 `pnpm build` 和 `pnpm test:sites`；构建产物须包含 `dist/client/index.html`、`dist/server/index.js` 和 `dist/.openai/hosting.json`。
 
-Electron 桌面构建保留 `desktop/` 中的 `flowpilot://app` 资源协议和 SPA 路由回退，以及上下文隔离、渲染进程沙箱和导航限制。通过 `scripts/package-desktop.mjs` 打包构建后的 `dist/client`，不打包开发服务器。当前 Apple 芯片 Mac 构建未签名，真实平台访问仍不在本阶段范围内。
+Electron 桌面构建保留 `apps/desktop/electron/` 中的 `flowpilot://app` 资源协议和 SPA 路由回退，以及上下文隔离、渲染进程沙箱和导航限制。通过 `scripts/package-desktop.mjs` 打包构建后的 `dist/client` 与 `dist/desktop`，不打包开发服务器。当前 Apple 芯片 Mac 构建未签名，真实平台访问仍不在本阶段范围内。

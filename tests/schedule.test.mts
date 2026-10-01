@@ -1,7 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {nextOccurrence,parseSchedule,stripSchedulePrefix,localDate} from '../src/schedule.mjs';
-import {createTask,startRun,stopTask,pauseTask,resumeTask,taskStatus,tickTasks} from '../src/task-model.mjs';
+import {nextOccurrence,parseSchedule,stripSchedulePrefix,localDate,createTask,startRun,stopTask,pauseTask,resumeTask,taskStatus,tickTasks} from '@flowpilot/domain';
 const at=(day,hour=8,minute=0)=>new Date(2026,9,day,hour,minute,0);
 const daily={repeat:'daily',time:'09:00',enabled:true,skipDates:[]};
 

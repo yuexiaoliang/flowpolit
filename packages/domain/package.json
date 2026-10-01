@@ -1,0 +1,12 @@
+{
+  "name": "@flowpilot/domain",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@flowpilot/contracts": "workspace:*"
+  }
+}

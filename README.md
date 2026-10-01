@@ -8,27 +8,36 @@ Flow Pilot 的目标是让用户在多个客户端创建、执行和追踪网页
 
 现阶段的网站页面、登录判断、AI 分析、工具调用和发布动作均为模拟。任务状态保存在本机浏览器存储中；定时仅在应用窗口打开且电脑唤醒时检查，错过的运行不会补跑。当前网页构建是桌面界面的预览，并非独立的网页客户端。
 
-项目地基重构将采用 pnpm monorepo 和 TypeScript / TSX，在共享任务规则与数据契约的基础上接入本地服务及后续客户端。当前代码尚未完成这项迁移，因此以下命令仍使用 npm。
+仓库使用 pnpm workspace。当前桌面界面、Electron 主进程和共享业务模块采用 TypeScript / TSX；Sites 交接所需的 Worker 与构建脚本仍是独立的 JavaScript 适配层。本地服务及其他客户端尚未实现。
+
+| 目录 | 职责 |
+| --- | --- |
+| `packages/contracts/` | 跨客户端的任务、运行记录与定时规则类型 |
+| `packages/domain/` | 不依赖界面的任务状态转换与定时计算 |
+| `apps/desktop/src/` | 当前桌面界面和本机存储适配 |
+| `apps/desktop/electron/` | Electron 主进程与静态资源协议 |
+
+目前模拟调度仍由打开的界面驱动。接入本地服务时，应让服务持有任务状态和调度执行权，客户端通过同一数据契约读取和操作任务。
 
 ## 本地开发
 
-需要 Node.js 22 或更新版本。在仓库目录运行：
+需要 Node.js 22 或更新版本，以及 pnpm 11。在仓库目录运行：
 
 ```bash
-npm ci
-npm run desktop:dev
+pnpm install --frozen-lockfile
+pnpm desktop:dev
 ```
 
-桌面窗口会直接打开。使用 `npm run dev` 可预览相同的界面。
+桌面窗口会直接打开。使用 `pnpm dev` 可预览相同的界面。
 
 ## 桌面打包
 
-`npm run desktop:mac` 构建 Apple 芯片 Mac 应用；`npm run desktop:linux` 构建 Linux x64 应用。产物位于仓库上一级的 `desktop-builds` 目录，打包内容为构建后的静态界面，不包含开发服务器。
+`pnpm desktop:mac` 构建 Apple 芯片 Mac 应用；`pnpm desktop:linux` 构建 Linux x64 应用。产物位于仓库上一级的 `desktop-builds` 目录，打包内容为构建后的静态界面与 Electron 主进程，不包含开发服务器。
 
 Mac 构建适用于 macOS 13 或更新版本，目前未签名、未公证。取得 `Flow Pilot.app` 后可将其移至“应用程序”。若 macOS 提示无法验证开发者，可尝试打开一次，再到“系统设置 → 隐私与安全性”选择“仍要打开”；若提示应用已损坏，请停止运行，并在 Mac 上从源码重新构建或等待签名版本。
 
 ## 验证
 
 ```bash
-npm test
+pnpm test
 ```

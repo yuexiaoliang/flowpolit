@@ -1,7 +1,7 @@
-const { readFile, stat } = require('node:fs/promises');
-const path = require('node:path');
+import { readFile, stat } from 'node:fs/promises';
+import path from 'node:path';
 
-const types = {
+const types: Record<string, string> = {
   '.html': 'text/html; charset=utf-8',
   '.js': 'text/javascript; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
@@ -13,13 +13,13 @@ const types = {
   '.woff2': 'font/woff2',
 };
 
-function createAssetHandler(clientRoot) {
+export function createAssetHandler(clientRoot: string): (request: Request) => Promise<Response> {
   const root = path.resolve(clientRoot);
   return async function serve(request) {
     const url = new URL(request.url);
     if (url.host !== 'app') return new Response('Not found', { status: 404 });
 
-    let pathname;
+    let pathname: string;
     try { pathname = decodeURIComponent(url.pathname); }
     catch { return new Response('Bad path', { status: 400 }); }
 
@@ -45,5 +45,3 @@ function createAssetHandler(clientRoot) {
     }
   };
 }
-
-module.exports = { createAssetHandler };

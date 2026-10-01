@@ -10,16 +10,16 @@ if (!['mac', 'linux'].includes(target)) throw new Error('Choose mac or linux');
 const stage = path.join(root, '.desktop-stage');
 const out = path.resolve(root, '../desktop-builds');
 await rm(stage, { recursive: true, force: true });
-await mkdir(path.join(stage, 'desktop'), { recursive: true });
+await mkdir(path.join(stage, 'dist/desktop'), { recursive: true });
 await cp(path.join(root, 'dist/client'), path.join(stage, 'dist/client'), { recursive: true });
-await cp(path.join(root, 'desktop/main.cjs'), path.join(stage, 'desktop/main.cjs'));
-await cp(path.join(root, 'desktop/asset-server.cjs'), path.join(stage, 'desktop/asset-server.cjs'));
+await cp(path.join(root, 'dist/desktop/main.cjs'), path.join(stage, 'dist/desktop/main.cjs'));
+await cp(path.join(root, 'dist/desktop/asset-server.cjs'), path.join(stage, 'dist/desktop/asset-server.cjs'));
 await writeFile(path.join(stage, 'package.json'), JSON.stringify({
   name: 'flow-pilot',
   productName: 'Flow Pilot',
   version: '0.2.0',
   description: 'Flow Pilot desktop task client',
-  main: 'desktop/main.cjs',
+  main: 'dist/desktop/main.cjs',
   author: 'Flow Pilot',
   license: 'UNLICENSED',
 }, null, 2));
@@ -31,9 +31,9 @@ const paths = await packager({
   executableName: 'Flow Pilot',
   platform: target === 'mac' ? 'darwin' : 'linux',
   arch: target === 'mac' ? 'arm64' : 'x64',
-  appBundleId: 'app.flowpilot.prototype',
+  appBundleId: 'app.flowpilot.desktop',
   appCategoryType: 'public.app-category.productivity',
-  icon: path.join(root, target === 'mac' ? 'desktop/icon.icns' : 'desktop/icon.png'),
+  icon: path.join(root, target === 'mac' ? 'apps/desktop/assets/icon.icns' : 'apps/desktop/assets/icon.png'),
   asar: true,
   overwrite: true,
   osxSign: false,
