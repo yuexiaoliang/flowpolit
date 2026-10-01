@@ -12,10 +12,13 @@ const serve = createAssetHandler(root);
 test('desktop app serves its entry point and built assets', async () => {
   const page = await serve(new Request('flowpilot://app/'));
   assert.equal(page.status, 200);
-  assert.match(await page.text(), /Flow Pilot/);
-  const asset = await serve(new Request('flowpilot://app/qa/reference.png'));
+  const html = await page.text();
+  assert.match(html, /Flow Pilot/);
+  const script = html.match(/<script[^>]+src="([^"]+\.js)"/)?.[1];
+  assert.ok(script, 'built page must reference a JavaScript asset');
+  const asset = await serve(new Request(`flowpilot://app${script}`));
   assert.equal(asset.status, 200);
-  assert.equal(asset.headers.get('content-type'), 'image/png');
+  assert.equal(asset.headers.get('content-type'), 'text/javascript; charset=utf-8');
 });
 
 test('desktop app restores task routes without exposing local files', async () => {

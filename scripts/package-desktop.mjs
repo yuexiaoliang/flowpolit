@@ -18,7 +18,7 @@ await writeFile(path.join(stage, 'package.json'), JSON.stringify({
   name: 'flow-pilot',
   productName: 'Flow Pilot',
   version: '0.2.0',
-  description: 'Flow Pilot desktop interaction prototype',
+  description: 'Flow Pilot desktop task client',
   main: 'desktop/main.cjs',
   author: 'Flow Pilot',
   license: 'UNLICENSED',

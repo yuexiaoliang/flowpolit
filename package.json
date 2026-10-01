@@ -1,5 +1,5 @@
 {
-  "name": "flow-pilot-prototype",
+  "name": "flow-pilot",
   "version": "0.2.0",
   "private": true,
   "type": "module",
@@ -11,8 +11,9 @@
     "desktop:mac": "npm run build && node scripts/package-desktop.mjs mac",
     "desktop:linux": "npm run build && node scripts/package-desktop.mjs linux",
     "preview": "vite preview",
+    "test": "npm run build && node --test tests/*.test.mjs",
     "test:sites": "node --test tests/sites-worker.test.mjs",
-    "test:prototype": "node --test tests/schedule.test.mjs tests/desktop-assets.test.mjs"
+    "test:app": "node --test tests/schedule.test.mjs tests/task-schedule.test.mjs tests/desktop-assets.test.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",

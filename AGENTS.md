@@ -1,21 +1,29 @@
-# Prototype Instructions
+# Flow Pilot 项目约定
 
-Run the local server yourself and open the preview in the browser available to this environment. Do not give the user server-start instructions when you can run it.
+## 产品与工程方向
 
-Before making substantial visual changes, use the Product Design plugin's `get-context` skill when the visual source is unclear or no longer matches the current goal. When the user gives durable prototype-specific design feedback, preferences, or decisions, record them in `AGENTS.md`.
+Flow Pilot 的目标是兼容多个客户端。任务规则、运行状态和数据契约应独立于客户端界面；桌面端、本地服务与未来客户端在这些边界上协作。面向维护者的文档使用简体中文，代码标识符、命令和必要的技术术语保留原文。
 
-When implementing from a selected generated mock, treat that image as the source of truth for layout, component anatomy, density, spacing, color, typography, visible content, and hierarchy.
+地基重构采用 pnpm monorepo，应用源码统一为 TypeScript / TSX，包括客户端、共享模块、本地服务和 Electron 主进程。迁移可分阶段进行，完成后不保留 JavaScript 业务模块。迁移前的命令与仓库当前配置保持一致。
 
-Product decision: The product is named **Flow Pilot**. The selected visual target is the third generated concept: a restrained light browser surface with a compact conversational task overlay and pale green progress state. The home uses a minimal AI goal composer and task list; the detail keeps the visited page visible while execution steps and AI analysis live in a small floating panel. Do not call the product a browser in its UI.
+## 当前桌面客户端
 
-The target is a desktop application. The browser-hosted prototype is only a preview of its interface. Do not add mobile breakpoints or mobile app layouts; support desktop windows with a minimum design width of 1024 px.
+当前仓库实现桌面交互原型；浏览器承载的版本用于预览同一界面。现阶段支持最小设计宽度为 1024 px 的桌面窗口，不在该界面中添加移动端布局；未来移动端使用独立客户端并复用共享能力。
 
-The floating window has one chronological activity stream. Execution events and AI events (brief reasoning summaries, tool calls, and Skill use) may interleave. Some saved-flow tasks produce execution events only until AI is invoked for an adjustment. Keep individual event details inspectable and the task controls visible as the history grows. Do not expose private raw chain-of-thought; show user-understandable summaries.
+自行启动本地开发服务，并在当前环境可用的浏览器中打开预览。能够自行运行时，不要只向用户提供启动步骤。
 
-Task creation starts with platform discovery, then navigation and login assessment, field recognition, execution, and result verification. A login-required example pauses for user confirmation. The user may correct or rewrite the goal at any stage; show the correction and replanning in the same chronological record, preserve earlier events, and restart platform discovery when the target changes. Termination stops further steps and can be followed by a new run. Keep the current stage and history when moving between the home and task views. The prototype simulates these states; it does not perform actual site automation or authentication.
+当前视觉参考为 `docs/design/desktop-reference.png`：克制的浅色界面、紧凑的对话式任务浮窗和淡绿色进度状态。首页包含简洁的 AI 目标输入区和任务列表；详情页保留访问页面的可见内容，执行步骤与 AI 分析显示在小型浮窗中。不要在产品界面中把 Flow Pilot 称为浏览器。若新的视觉目标不清楚，或参考图与目标不符，在较大视觉改动前使用 Product Design 插件的 `get-context` 技能；根据明确参考图实现时，以其布局、组件结构、密度、间距、颜色、字体、内容和层级为依据。将用户给出的长期设计偏好与决定记入本文件。
 
-Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts/prepare-sites-build.mjs`, and `tests/sites-worker.test.mjs` intact so the same local prototype can be handed to Sites. Before a Sites handoff, run `npm run build` and `npm run test:sites`; the build must leave `dist/client/index.html`, `dist/server/index.js`, and `dist/.openai/hosting.json`.
+浮窗使用一条按时间排序的活动记录；执行事件与 AI 摘要、工具调用和 Skill 使用可以交错出现。按保存流程执行的任务在需要 AI 调整前可以只有执行事件。事件详情可查看，历史增长时任务控制仍可见。只展示用户能理解的推理摘要，不展示私有原始思维链。
 
-The prototype also ships as an Electron desktop app for Apple silicon Mac. Keep the local `flowpilot://app` asset protocol and SPA route fallback in `desktop/`, and preserve context isolation, renderer sandboxing, and navigation restrictions. Package the built `dist/client` through `scripts/package-desktop.mjs`; do not package the development server. The distributed Mac build is unsigned and simulated; actual platform access is outside this prototype.
+任务依次经历平台发现、导航与登录判断、字段识别、执行和结果验证。需要登录时暂停并等待用户确认。用户可随时修正或重写目标；修正与重新规划进入同一活动记录，旧事件保留，目标平台变化时重新开始平台发现。终止后停止本轮步骤，但允许开启新一轮。首页与任务页之间切换时保留阶段和历史。
 
-Scheduling is a task property, with natural-language input or a small clock control on the home composer, a lightweight All / Scheduled filter, a schedule row on the task list and under the floating panel's current goal. Preserve the existing desktop layout. Show the next run and allow one-time, daily, Monday-to-Friday, and weekly rules. The local simulated scheduler triggers only while an app window is open, skips missed runs, and never overlaps an active or paused run. Keep pause and resume in persistent task state. Pause preserves the current step; terminate ends this run; stop scheduling disables future triggers without terminating this run. Plain “stop” or “terminate” ends the current run; “stop all” ends it and disables future triggers. Keep natural-language controls available after completion and termination. Group previous runs as collapsed history, with the current run expanded. Do not imply that the prototype performs real web automation or runs while the app is closed.
+定时属于任务，支持自然语言输入及首页时钟控件；任务列表提供全部 / 定时筛选和定时行，浮窗当前目标下显示定时信息与下次运行时间。规则包括仅一次、每天、工作日和每周。当前模拟调度器仅在应用窗口打开时触发，跳过错过或重叠的运行。暂停持久保存当前步骤；单独的“停止”或“终止”只结束本轮；停止定时只关闭后续触发，不中断本轮；“全部停止”同时结束本轮并停用后续触发。完成或终止后仍可使用自然语言控制。历史轮次折叠，当前轮次展开。
+
+以上网页、登录、AI、工具和发布过程目前均为模拟；不要暗示已经接入真实平台，或会在应用关闭后继续运行。
+
+## 当前构建约束
+
+界面代码位于 `src/`。保持 `.openai/hosting.json`、`worker/index.js`、`scripts/prepare-sites-build.mjs` 和 `tests/sites-worker.test.mjs` 完整，使现有网页预览仍可交接给 Sites。交接前运行 `npm run build` 和 `npm run test:sites`；构建产物须包含 `dist/client/index.html`、`dist/server/index.js` 和 `dist/.openai/hosting.json`。迁移到 pnpm 后同步更新命令并验证相同产物。
+
+Electron 桌面构建保留 `desktop/` 中的 `flowpilot://app` 资源协议和 SPA 路由回退，以及上下文隔离、渲染进程沙箱和导航限制。通过 `scripts/package-desktop.mjs` 打包构建后的 `dist/client`，不打包开发服务器。当前 Apple 芯片 Mac 构建未签名，真实平台访问仍不在本阶段范围内。
