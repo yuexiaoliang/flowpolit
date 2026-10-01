@@ -1,0 +1,21 @@
+# Prototype Instructions
+
+Run the local server yourself and open the preview in the browser available to this environment. Do not give the user server-start instructions when you can run it.
+
+Before making substantial visual changes, use the Product Design plugin's `get-context` skill when the visual source is unclear or no longer matches the current goal. When the user gives durable prototype-specific design feedback, preferences, or decisions, record them in `AGENTS.md`.
+
+When implementing from a selected generated mock, treat that image as the source of truth for layout, component anatomy, density, spacing, color, typography, visible content, and hierarchy.
+
+Product decision: The product is named **Flow Pilot**. The selected visual target is the third generated concept: a restrained light browser surface with a compact conversational task overlay and pale green progress state. The home uses a minimal AI goal composer and task list; the detail keeps the visited page visible while execution steps and AI analysis live in a small floating panel. Do not call the product a browser in its UI.
+
+The target is a desktop application. The browser-hosted prototype is only a preview of its interface. Do not add mobile breakpoints or mobile app layouts; support desktop windows with a minimum design width of 1024 px.
+
+The floating window has one chronological activity stream. Execution events and AI events (brief reasoning summaries, tool calls, and Skill use) may interleave. Some saved-flow tasks produce execution events only until AI is invoked for an adjustment. Keep individual event details inspectable and the task controls visible as the history grows. Do not expose private raw chain-of-thought; show user-understandable summaries.
+
+Task creation starts with platform discovery, then navigation and login assessment, field recognition, execution, and result verification. A login-required example pauses for user confirmation. The user may correct or rewrite the goal at any stage; show the correction and replanning in the same chronological record, preserve earlier events, and restart platform discovery when the target changes. Termination stops further steps and can be followed by a new run. Keep the current stage and history when moving between the home and task views. The prototype simulates these states; it does not perform actual site automation or authentication.
+
+Build app UI in `src/`. Keep `.openai/hosting.json`, `worker/index.js`, `scripts/prepare-sites-build.mjs`, and `tests/sites-worker.test.mjs` intact so the same local prototype can be handed to Sites. Before a Sites handoff, run `npm run build` and `npm run test:sites`; the build must leave `dist/client/index.html`, `dist/server/index.js`, and `dist/.openai/hosting.json`.
+
+The prototype also ships as an Electron desktop app for Apple silicon Mac. Keep the local `flowpilot://app` asset protocol and SPA route fallback in `desktop/`, and preserve context isolation, renderer sandboxing, and navigation restrictions. Package the built `dist/client` through `scripts/package-desktop.mjs`; do not package the development server. The distributed Mac build is unsigned and simulated; actual platform access is outside this prototype.
+
+Scheduling is a task property, with natural-language input or a small clock control on the home composer, a lightweight All / Scheduled filter, a schedule row on the task list and under the floating panel's current goal. Preserve the existing desktop layout. Show the next run and allow one-time, daily, Monday-to-Friday, and weekly rules. The local simulated scheduler triggers only while an app window is open, skips missed runs, and never overlaps an active or paused run. Keep pause and resume in persistent task state. Pause preserves the current step; terminate ends this run; stop scheduling disables future triggers without terminating this run. Plain “stop” or “terminate” ends the current run; “stop all” ends it and disables future triggers. Keep natural-language controls available after completion and termination. Group previous runs as collapsed history, with the current run expanded. Do not imply that the prototype performs real web automation or runs while the app is closed.
