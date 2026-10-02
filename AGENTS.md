@@ -4,7 +4,7 @@
 
 Flow Pilot 的目标是兼容多个客户端。任务规则、运行状态和数据契约应独立于客户端界面；桌面端、本地服务与未来客户端在这些边界上协作。面向维护者的文档使用简体中文，代码标识符、命令和必要的技术术语保留原文。
 
-仓库采用 pnpm workspace，应用源码使用 TypeScript / TSX。`packages/contracts` 定义跨客户端数据类型，`packages/domain` 承载与界面无关的任务规则。新增客户端或本地服务应依赖这些共享边界；不要将 Electron、DOM 或浏览器存储依赖放入共享包。Sites 的 Worker 和构建脚本是现有交接适配层。
+仓库采用 pnpm workspace，应用源码使用 TypeScript / TSX。`packages/contracts` 目前只定义可复用的定时规则，`packages/domain` 负责定时计算。当前演示任务、假平台事件和窗口内模拟调度位于 `apps/desktop/src/demo/`，不作为未来客户端或本地服务的正式数据契约。实现本地服务时，再定义稳定的任务与运行记录契约；不要将 Electron、DOM 或浏览器存储依赖放入共享包。Sites 的 Worker 和构建脚本是现有交接适配层。
 
 ## 当前桌面客户端
 

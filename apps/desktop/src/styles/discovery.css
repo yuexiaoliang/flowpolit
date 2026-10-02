@@ -1,0 +1,82 @@
+.discovery-surface {
+  height: calc(100% - 84px);
+  overflow: auto;
+  background: #f6f8f7;
+}
+.discovery-sitebar {
+  height: 62px;
+  background: #fff;
+  border-bottom: 1px solid #e7ebe9;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 0 44px;
+  color: #779082;
+  font-size: 13px;
+}
+.discovery-main {
+  margin: clamp(90px, 15vh, 160px) auto 0;
+  max-width: 620px;
+  text-align: center;
+  padding: 0 18px;
+  color: #2b3c32;
+}
+.discovery-symbol {
+  height: 48px;
+  width: 48px;
+  margin: 0 auto 20px;
+  border-radius: 13px;
+  background: #e9f3ec;
+  color: #52966a;
+  display: grid;
+  place-items: center;
+}
+.discovery-main > small {
+  font-size: 12px;
+  color: #719e7e;
+  letter-spacing: 0.04em;
+}
+.discovery-main h1 {
+  font-size: 25px;
+  font-weight: 600;
+  margin: 14px 0 12px;
+}
+.discovery-main p {
+  color: #8d9b91;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 480px;
+}
+.discovery-progress {
+  margin: 36px auto 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #82988a;
+  font-size: 12px;
+}
+.discovery-progress .live-dot {
+  width: 8px;
+  height: 8px;
+  box-shadow: 0 0 0 3px #e3f1e7;
+}
+.discovery-main > button {
+  border: 1px solid #d5e4d9;
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px 13px;
+  color: #408d5e;
+  font-size: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.discovery-main > button:hover {
+  background: #edf7ef;
+}
+
+.discovery-progress .live-dot.stopped {
+  box-shadow: 0 0 0 3px #ecefeb;
+}

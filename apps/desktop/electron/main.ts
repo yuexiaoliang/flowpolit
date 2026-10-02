@@ -6,11 +6,16 @@ const scheme = 'flowpilot';
 const origin = `${scheme}://app`;
 const clientRoot = path.resolve(__dirname, '../client');
 
-protocol.registerSchemesAsPrivileged([{ scheme, privileges: {
-  standard: true,
-  secure: true,
-  supportFetchAPI: true,
-}}]);
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme,
+    privileges: {
+      standard: true,
+      secure: true,
+      supportFetchAPI: true,
+    },
+  },
+]);
 
 function createWindow() {
   const window = new BrowserWindow({

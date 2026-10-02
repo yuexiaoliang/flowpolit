@@ -20,8 +20,11 @@ export function createAssetHandler(clientRoot: string): (request: Request) => Pr
     if (url.host !== 'app') return new Response('Not found', { status: 404 });
 
     let pathname: string;
-    try { pathname = decodeURIComponent(url.pathname); }
-    catch { return new Response('Bad path', { status: 400 }); }
+    try {
+      pathname = decodeURIComponent(url.pathname);
+    } catch {
+      return new Response('Bad path', { status: 400 });
+    }
 
     const target = path.resolve(root, `.${pathname}`);
     if (target !== root && !target.startsWith(`${root}${path.sep}`)) {
