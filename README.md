@@ -10,18 +10,18 @@ Flow Pilot 的目标是让用户在多个客户端创建、执行和追踪网页
 
 仓库使用 pnpm workspace。当前桌面界面、Electron 主进程和共享业务模块采用 TypeScript / TSX；Sites 交接所需的 Worker 与构建脚本仍是独立的 JavaScript 适配层。本地服务及其他客户端尚未实现。
 
-| 目录 | 职责 |
-| --- | --- |
-| `packages/contracts/` | 当前可复用的定时规则类型 |
-| `packages/domain/` | 不依赖界面的定时计算 |
-| `apps/desktop/src/app/` | 桌面任务状态、持久化与页面路由 |
-| `apps/desktop/src/features/` | 首页、任务详情、活动浮窗和定时编辑 |
-| `apps/desktop/src/demo/` | 演示任务、自然语言示例与窗口内模拟调度 |
-| `apps/desktop/src/presentation/` | 界面显示文案与时间标签 |
-| `apps/desktop/src/styles/` | 按界面区域拆分的桌面样式 |
-| `apps/desktop/electron/` | Electron 主进程与静态资源协议 |
+| 目录                             | 职责                                   |
+| -------------------------------- | -------------------------------------- |
+| `packages/contracts/`            | 当前可复用的定时规则类型               |
+| `packages/domain/`               | 不依赖界面的定时计算                   |
+| `apps/desktop/src/app/`          | 桌面任务状态、持久化与页面路由         |
+| `apps/desktop/src/features/`     | 首页、任务详情、活动浮窗和定时编辑     |
+| `apps/desktop/src/demo/`         | 演示任务、自然语言示例与窗口内模拟调度 |
+| `apps/desktop/src/presentation/` | 界面显示文案与时间标签                 |
+| `apps/desktop/src/styles/`       | 按界面区域拆分的桌面样式               |
+| `apps/desktop/electron/`         | Electron 主进程与静态资源协议          |
 
-演示任务模型只服务于当前桌面原型，不作为未来客户端的数据契约。目前模拟调度仍由打开的界面驱动。接入本地服务时，应先定义正式的任务与运行记录契约，再由服务持有状态和调度执行权。
+后续分层与实施顺序见 [架构说明](docs/architecture.md)，产品与开发约定见 [AGENTS.md](AGENTS.md)。上述后续方案尚未实现。
 
 ## 本地开发
 
