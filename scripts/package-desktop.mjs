@@ -14,6 +14,7 @@ await mkdir(path.join(stage, 'dist/desktop'), { recursive: true });
 await cp(path.join(root, 'dist/client'), path.join(stage, 'dist/client'), { recursive: true });
 await cp(path.join(root, 'dist/desktop/main.cjs'), path.join(stage, 'dist/desktop/main.cjs'));
 await cp(path.join(root, 'dist/desktop/asset-server.cjs'), path.join(stage, 'dist/desktop/asset-server.cjs'));
+await cp(path.join(root, 'dist/desktop/preload.cjs'), path.join(stage, 'dist/desktop/preload.cjs'));
 await writeFile(path.join(stage, 'package.json'), JSON.stringify({
   name: 'flow-pilot',
   productName: 'Flow Pilot',

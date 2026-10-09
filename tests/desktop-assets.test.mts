@@ -27,6 +27,12 @@ test('desktop app restores task routes without exposing local files', async () =
   assert.match(await route.text(), /Flow Pilot/);
   const missing = await serve(new Request('flowpilot://app/not-a-file.js'));
   assert.equal(missing.status, 404);
-  const outside = await serve(new Request('flowpilot://other/'));
-  assert.equal(outside.status, 404);
+  for (const url of [
+    'flowpilot://other/',
+    'flowpilot://fixture/',
+    'flowpilot://app/%2e%2e%2fpackage.json',
+    'flowpilot://app/local-page/index.html',
+  ]) {
+    assert.equal((await serve(new Request(url))).status, 404, url);
+  }
 });

@@ -14,9 +14,10 @@ type HomeProps = {
   onOpen: (id: string) => void;
   onCreate: (goal: string, schedule: ScheduleRule | null) => void;
   onSchedule: (id: string, schedule: ScheduleRule) => void;
+  onOpenHedgeDoc: () => void;
 };
 
-export function Home({ tasks, onOpen, onCreate, onSchedule }: HomeProps) {
+export function Home({ tasks, onOpen, onCreate, onSchedule, onOpenHedgeDoc }: HomeProps) {
   const [goal, setGoal] = useState(''),
     [draft, setDraft] = useState<ScheduleRule | null>(null),
     [editing, setEditing] = useState<string | null>(null),
@@ -99,6 +100,9 @@ export function Home({ tasks, onOpen, onCreate, onSchedule }: HomeProps) {
         <section className="tasks">
           <div className="tasks-head">
             <h2>我的任务</h2>
+            <button className="web-page-entry" onClick={onOpenHedgeDoc}>
+              <Globe size={14} /> 打开 HedgeDoc
+            </button>
             <div className="task-filters">
               <button aria-pressed={filter === 'all'} onClick={() => setFilter('all')}>
                 全部

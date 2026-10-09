@@ -36,6 +36,7 @@ export function useTaskWorkspace() {
     history.pushState({}, '', '/');
     setActive(null);
   };
+  const openHedgeDoc = () => open('hedgedoc');
   const create = (goal: string, schedule: ScheduleRule | null) => {
     const task = createTask(goal, schedule);
     setTasks((list) => [task, ...list]);
@@ -52,6 +53,8 @@ export function useTaskWorkspace() {
     tasks,
     task: tasks.find((item) => item.id === active),
     open,
+    openHedgeDoc,
+    pageActive: active === 'hedgedoc',
     home,
     create,
     update,
